@@ -1,0 +1,17 @@
+modules:
+  jira:issuePanel:
+    - key: jhciv-hello-world-issue-panel
+      resource: main
+      resolver:
+        function: resolver
+      render: native
+      title: JHCIV
+      icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: src/frontend/index.jsx
+app:
+  id: ari:cloud:ecosystem::app/2b7a5677-c171-4bca-9814-818e8bf2943d
