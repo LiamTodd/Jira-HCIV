@@ -1,17 +1,32 @@
 modules:
   jira:issuePanel:
-    - key: jhciv-hello-world-issue-panel
-      resource: main
+    - key: jhciv-issue-panel
+      resource: issue-panel
       resolver:
-        function: resolver
+        function: issue-panel-resolver
       render: native
       title: JHCIV
       icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
+  jira:projectPage:
+    - key: jchiv-project-page
+      resource: project-page
+      render: native
+      title: JHCIV
+      icon: https://developer.atlassian.com/platform/forge/images/icons/project-page-icon.svg
   function:
-    - key: resolver
-      handler: index.handler
+    - key: issue-panel-resolver
+      handler: resolvers.handler
 resources:
-  - key: main
-    path: src/frontend/index.jsx
+  - key: issue-panel
+    path: src/frontend/issuePanel.jsx
+  - key: project-page
+    path: src/frontend/projectPage.jsx
 app:
   id: ari:cloud:ecosystem::app/2b7a5677-c171-4bca-9814-818e8bf2943d
+permissions:
+  scopes:
+    - read:jira-work
+  external:
+    fetch:
+      backend:
+        - 'https://7ee3-2001-8003-401a-c800-393c-97e9-7b99-b767.ngrok-free.app/*'
