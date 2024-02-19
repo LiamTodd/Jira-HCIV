@@ -2,13 +2,10 @@ import Resolver from '@forge/resolver';
 import { fetch } from '@forge/api';
 
 export const predictFunctionKey = 'predict';
+export const bulkPredictFunctionKey = 'bulk-predict';
 
-const resolver = new Resolver();
-const urlBase =
-  'https://7ee3-2001-8003-401a-c800-393c-97e9-7b99-b767.ngrok-free.app';
-
-resolver.define(predictFunctionKey, async ({ payload, context }) => {
-  const response = await fetch(`${urlBase}/classify`, {
+const genericClassifierCaller = async (payload, endpoint) => {
+  const response = await fetch(`${urlBase}/${endpoint}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -17,6 +14,18 @@ resolver.define(predictFunctionKey, async ({ payload, context }) => {
   });
   const responseData = await response.json();
   return responseData;
+};
+
+const resolver = new Resolver();
+const urlBase =
+  'https://9451-2001-8003-401a-c800-25d1-590c-8dd-4f26.ngrok-free.app';
+
+resolver.define(predictFunctionKey, async ({ payload, context }) => {
+  return await genericClassifierCaller(payload, 'classify');
+});
+
+resolver.define(bulkPredictFunctionKey, async ({ payload, context }) => {
+  return await genericClassifierCaller(payload, 'bulk-classify');
 });
 
 export const handler = resolver.getDefinitions();

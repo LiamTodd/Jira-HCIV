@@ -3,18 +3,20 @@ modules:
     - key: jhciv-issue-panel
       resource: issue-panel
       resolver:
-        function: issue-panel-resolver
+        function: resolver
       render: native
       title: JHCIV
       icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
   jira:projectPage:
     - key: jchiv-project-page
       resource: project-page
+      resolver:
+        function: resolver
       render: native
       title: JHCIV
       icon: https://developer.atlassian.com/platform/forge/images/icons/project-page-icon.svg
   function:
-    - key: issue-panel-resolver
+    - key: resolver
       handler: resolvers.handler
 resources:
   - key: issue-panel
@@ -29,4 +31,4 @@ permissions:
   external:
     fetch:
       backend:
-        - 'https://7ee3-2001-8003-401a-c800-393c-97e9-7b99-b767.ngrok-free.app/*'
+        - 'https://9451-2001-8003-401a-c800-25d1-590c-8dd-4f26.ngrok-free.app/*'
