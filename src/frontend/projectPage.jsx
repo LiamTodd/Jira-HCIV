@@ -5,6 +5,8 @@ import { constructBulkPayload } from '../utils/misc';
 import { bulkPredictFunctionKey } from '../resolvers';
 import { invoke } from '@forge/bridge';
 
+
+
 const App = () => {
   useEffect(() => {
     getAllIssues(['summary', 'description', 'comment']).then((issueData) => {
@@ -13,6 +15,7 @@ const App = () => {
       );
     });
   }, []);
+
 
   return (
     <>

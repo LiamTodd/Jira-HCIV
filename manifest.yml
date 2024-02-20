@@ -12,7 +12,6 @@ modules:
       resource: project-page
       resolver:
         function: resolver
-      render: native
       title: JHCIV
       icon: https://developer.atlassian.com/platform/forge/images/icons/project-page-icon.svg
   function:
@@ -22,7 +21,7 @@ resources:
   - key: issue-panel
     path: src/frontend/issuePanel.jsx
   - key: project-page
-    path: src/frontend/projectPage.jsx
+    path: static/dashboard/build
 app:
   id: ari:cloud:ecosystem::app/2b7a5677-c171-4bca-9814-818e8bf2943d
 permissions:
