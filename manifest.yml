@@ -29,7 +29,7 @@ permissions:
   external:
     fetch:
       backend:
-        - 'https://b804-2001-8003-401a-c800-b9b9-df83-21f8-e22d.ngrok-free.app/*'
+        - 'https://8c1f-2001-8003-401a-c800-b9b9-df83-21f8-e22d.ngrok-free.app/*'
   content:
     styles:
       - unsafe-inline
