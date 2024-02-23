@@ -18,10 +18,15 @@ ChartJS.register(
   Legend
 );
 
-function VerticalBar({ data, dataPrepFunc, title = 'Vertical Bar Chart' }) {
+function VerticalBar({
+  data,
+  dataPrepFunc,
+  showNonHci,
+  title = 'Vertical Bar Chart',
+}) {
   return (
     <Bar
-      data={dataPrepFunc(data)}
+      data={dataPrepFunc(data, showNonHci)}
       options={{
         responsive: true,
         plugins: {

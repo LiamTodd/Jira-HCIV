@@ -15,24 +15,24 @@ const combineClassifications = (class1, class2) => {
   return res;
 };
 
-const getNewClassificationCount = () => {
+const getNewClassificationCount = (showNonHci) => {
   const classificationCount = {};
   classificationCount[APP_USAGE] = 0;
   classificationCount[INCLUSIVENESS] = 0;
   classificationCount[USER_REACTION] = 0;
-  classificationCount[NON_HUMAN_CENTRIC] = 0;
+  if (showNonHci) classificationCount[NON_HUMAN_CENTRIC] = 0;
   return classificationCount;
 };
 
-export const combinedClassificationPrepFunc = (data) => {
-  const classificationCount = getNewClassificationCount();
+export const combinedClassificationPrepFunc = (data, showNonHci) => {
+  const classificationCount = getNewClassificationCount(showNonHci);
   data.forEach((issue) => {
     const classification = combineClassifications(
       issue.summary.predictions,
       issue.description.predictions
     );
     for (const [key, value] of Object.entries(classification)) {
-      if (value) {
+      if (value && classificationCount[key] !== undefined) {
         classificationCount[key]++;
       }
     }
@@ -43,11 +43,11 @@ export const combinedClassificationPrepFunc = (data) => {
   };
 };
 
-export const summaryClassificationPrepFunc = (data) => {
-  const classificationCount = getNewClassificationCount();
+export const summaryClassificationPrepFunc = (data, showNonHci) => {
+  const classificationCount = getNewClassificationCount(showNonHci);
   data.forEach((issue) => {
     for (const [key, value] of Object.entries(issue.summary.predictions)) {
-      if (value) {
+      if (value && classificationCount[key] !== undefined) {
         classificationCount[key]++;
       }
     }
@@ -58,11 +58,11 @@ export const summaryClassificationPrepFunc = (data) => {
   };
 };
 
-export const descriptionClassificationPrepFunc = (data) => {
-  const classificationCount = getNewClassificationCount();
+export const descriptionClassificationPrepFunc = (data, showNonHci) => {
+  const classificationCount = getNewClassificationCount(showNonHci);
   data.forEach((issue) => {
     for (const [key, value] of Object.entries(issue.description.predictions)) {
-      if (value) {
+      if (value && classificationCount[key] !== undefined) {
         classificationCount[key]++;
       }
     }
