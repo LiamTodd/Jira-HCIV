@@ -1,5 +1,21 @@
 import { requestJira } from '@forge/bridge';
 
+const genericJiraGet = async (endpoint) => {
+  const response = await requestJira(endpoint, {
+    headers: {
+      Accept: 'application/json',
+    },
+  });
+  return await response.json();
+};
+
+export const getAllPriorities = async () => {
+  return await genericJiraGet(`/rest/api/3/priority`);
+};
+export const getAllStatuses = async () => {
+  return await genericJiraGet(`/rest/api/3/status`);
+};
+
 export const getAllIssues = async (fields = [], maxResults = 100) => {
   let allIssues = [];
   let startAt = 0;
