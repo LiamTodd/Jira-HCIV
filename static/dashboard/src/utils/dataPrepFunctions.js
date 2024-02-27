@@ -2,7 +2,7 @@ import {
   APP_USAGE,
   INCLUSIVENESS,
   NON_HUMAN_CENTRIC,
-  THEME_COLOURS,
+  THEME_COLOURS_DICT,
   USER_REACTION,
 } from '../constants';
 import { cleanLabel } from './stringUtils';
@@ -24,6 +24,14 @@ const getNewClassificationCount = (showNonHci) => {
   classificationCount[USER_REACTION] = 0;
   if (showNonHci) classificationCount[NON_HUMAN_CENTRIC] = 0;
   return classificationCount;
+};
+
+const getNewGroupCount = (groups) => {
+  const groupCount = {};
+  groups.forEach((group) => {
+    groupCount[group.name] = 0;
+  });
+  return groupCount;
 };
 
 export const combinedClassificationPrepFunc = (data, showNonHci) => {
@@ -51,29 +59,24 @@ export const combinedClassificationPriorityGroupedPrepFunc = (
   priorities
 ) => {
   const datasets = [];
-  const labels = Object.keys(getNewClassificationCount(showNonHci)).map(
-    (label) => cleanLabel(label)
-  );
-  priorities.forEach((priority) => {
+  const labels = priorities.map((priority) => cleanLabel(priority.name));
+  const HciCategories = Object.keys(getNewClassificationCount(showNonHci));
+  HciCategories.forEach((category) => {
     const dataSet = {
-      label: priority.name,
-      backgroundColor: priority.statusColor,
+      label: cleanLabel(category),
+      backgroundColor: THEME_COLOURS_DICT[category],
     };
-    const classificationCount = getNewClassificationCount(showNonHci);
-    data
-      .filter((issue) => issue.priority === priority.name)
-      .forEach((issue) => {
-        const classification = combineClassifications(
-          issue.summary.predictions,
-          issue.description.predictions
-        );
-        for (const [key, value] of Object.entries(classification)) {
-          if (value && classificationCount[key] !== undefined) {
-            classificationCount[key]++;
-          }
-        }
-      });
-    dataSet.data = Object.values(classificationCount);
+    const priorityCount = getNewGroupCount(priorities);
+    data.forEach((issue) => {
+      const classification = combineClassifications(
+        issue.summary.predictions,
+        issue.description.predictions
+      );
+      if (classification[category] && issue.priority !== undefined) {
+        priorityCount[issue.priority]++;
+      }
+    });
+    dataSet.data = Object.values(priorityCount);
     datasets.push(dataSet);
   });
   return {
@@ -88,29 +91,24 @@ export const combinedClassificationStatusGroupedPrepFunc = (
   statuses
 ) => {
   const datasets = [];
-  const labels = Object.keys(getNewClassificationCount(showNonHci)).map(
-    (label) => cleanLabel(label)
-  );
-  statuses.forEach((status) => {
+  const labels = statuses.map((status) => cleanLabel(status.name));
+  const HciCategories = Object.keys(getNewClassificationCount(showNonHci));
+  HciCategories.forEach((category) => {
     const dataSet = {
-      label: status.name,
-      backgroundColor: status.statusCategory.colorName,
+      label: cleanLabel(category),
+      backgroundColor: THEME_COLOURS_DICT[category],
     };
-    const classificationCount = getNewClassificationCount(showNonHci);
-    data
-      .filter((issue) => issue.status === status.name)
-      .forEach((issue) => {
-        const classification = combineClassifications(
-          issue.summary.predictions,
-          issue.description.predictions
-        );
-        for (const [key, value] of Object.entries(classification)) {
-          if (value && classificationCount[key] !== undefined) {
-            classificationCount[key]++;
-          }
-        }
-      });
-    dataSet.data = Object.values(classificationCount);
+    const statusCount = getNewGroupCount(statuses);
+    data.forEach((issue) => {
+      const classification = combineClassifications(
+        issue.summary.predictions,
+        issue.description.predictions
+      );
+      if (classification[category] && issue.status !== undefined) {
+        statusCount[issue.status]++;
+      }
+    });
+    dataSet.data = Object.values(statusCount);
     datasets.push(dataSet);
   });
   return {
@@ -152,7 +150,7 @@ export const descriptionClassificationPrepFunc = (data, showNonHci) => {
 export const injectThemeColours = (data) => {
   const newData = { ...data };
   newData.datasets.forEach((dataset) => {
-    dataset.backgroundColor = THEME_COLOURS;
+    dataset.backgroundColor = Object.values(THEME_COLOURS_DICT);
   });
   return newData;
 };

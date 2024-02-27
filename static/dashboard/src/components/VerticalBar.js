@@ -6,18 +6,10 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { injectThemeColours } from '../utils/dataPrepFunctions';
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
 
 function VerticalBar({
   data,
@@ -34,6 +26,9 @@ function VerticalBar({
           title: {
             display: true,
             text: title,
+          },
+          legend: {
+            display: false,
           },
         },
       }}

@@ -27,11 +27,11 @@ function BasicDistributionGroup({ data, showNonHci }) {
         exclusive
         onChange={handleSetChartType}
       >
-        <ToggleButton value={DISTRIBUTION_TYPE_BAR}>
-          <BarChartIcon />
-        </ToggleButton>
         <ToggleButton value={DISTRIBUTION_TYPE_PIE}>
           <PieChartIcon />
+        </ToggleButton>
+        <ToggleButton value={DISTRIBUTION_TYPE_BAR}>
+          <BarChartIcon />
         </ToggleButton>
       </ToggleButtonGroup>
       <>
