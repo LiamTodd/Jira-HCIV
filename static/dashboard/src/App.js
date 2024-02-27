@@ -18,6 +18,7 @@ import {
 } from './utils/dataPrepFunctions';
 import Checkbox from '@mui/material/Checkbox';
 import BasicDistributionGroup from './components/BasicDistributionGroup';
+import { Box, Grid } from '@mui/material';
 
 function App() {
   const [predictionData, setPredictionData] = useState();
@@ -62,40 +63,58 @@ function App() {
   };
 
   return (
-    <>
-      <Checkbox checked={showNonHci} onChange={handleSetShowNonHci}></Checkbox>
-      {predictionData ? (
-        <BasicDistributionGroup
-          data={predictionData}
-          showNonHci={showNonHci}
-        ></BasicDistributionGroup>
-      ) : (
-        <div>Loading...</div>
-      )}
+    <Box>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Checkbox
+            checked={showNonHci}
+            onChange={handleSetShowNonHci}
+          ></Checkbox>
 
-      {predictionData && priorities ? (
-        <GroupedBar
-          data={predictionData}
-          dataPrepFunc={combinedClassificationPriorityGroupedPrepFunc}
-          title={'Human-Centric Issues Grouped by Priority'}
-          showNonHci={showNonHci}
-          groups={priorities}
-        ></GroupedBar>
-      ) : (
-        <div>Loading...</div>
-      )}
-      {predictionData && statuses ? (
-        <GroupedBar
-          data={predictionData}
-          dataPrepFunc={combinedClassificationStatusGroupedPrepFunc}
-          title={'Human-Centric Issues Grouped by Status'}
-          showNonHci={showNonHci}
-          groups={statuses}
-        ></GroupedBar>
-      ) : (
-        <div>Loading...</div>
-      )}
-    </>
+          <Grid container item xs={12}>
+            {predictionData ? (
+              <BasicDistributionGroup
+                data={predictionData}
+                showNonHci={showNonHci}
+              ></BasicDistributionGroup>
+            ) : (
+              <div>Loading...</div>
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            <div>Key Stats</div>
+          </Grid>
+        </Grid>
+
+        <Grid container item xs={6}>
+          {predictionData && priorities ? (
+            <GroupedBar
+              data={predictionData}
+              dataPrepFunc={combinedClassificationPriorityGroupedPrepFunc}
+              title={'Human-Centric Issues Grouped by Priority'}
+              showNonHci={showNonHci}
+              groups={priorities}
+            ></GroupedBar>
+          ) : (
+            <div>Loading...</div>
+          )}
+        </Grid>
+
+        <Grid container item xs={6}>
+          {predictionData && statuses ? (
+            <GroupedBar
+              data={predictionData}
+              dataPrepFunc={combinedClassificationStatusGroupedPrepFunc}
+              title={'Human-Centric Issues Grouped by Status'}
+              showNonHci={showNonHci}
+              groups={statuses}
+            ></GroupedBar>
+          ) : (
+            <div>Loading...</div>
+          )}
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
 
