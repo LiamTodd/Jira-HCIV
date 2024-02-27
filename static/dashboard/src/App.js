@@ -12,8 +12,10 @@ import {
 } from './utils/requestJiraUtils';
 import { constructBulkPayload } from './utils/misc';
 import VerticalBar from './components/VerticalBar';
+import GroupedBar from './components/groupedBar';
 import {
   combinedClassificationPrepFunc,
+  combinedClassificationPriorityGroupedPrepFunc,
   descriptionClassificationPrepFunc,
   summaryClassificationPrepFunc,
 } from './utils/dataPrepFunctions';
@@ -27,12 +29,12 @@ function App() {
     getAllStatuses().then((statusData) => {
       setStatuses(statusData);
     });
-  });
+  }, []);
   useEffect(() => {
     getAllPriorities().then((priorityData) => {
       setPriorities(priorityData);
     });
-  });
+  }, []);
   useEffect(() => {
     getAllIssues(FIELDS_FOR_CLASSIFIER.concat(ADDITIONAL_FIELDS)).then(
       (issueData) => {
@@ -85,6 +87,17 @@ function App() {
             showNonHci={showNonHci}
           ></VerticalBar>
         </>
+      ) : (
+        <div>Loading...</div>
+      )}
+      {predictionData && priorities ? (
+        <GroupedBar
+          data={predictionData}
+          dataPrepFunc={combinedClassificationPriorityGroupedPrepFunc}
+          title={'HCIs Grouped by Priority'}
+          showNonHci={showNonHci}
+          groups={priorities}
+        ></GroupedBar>
       ) : (
         <div>Loading...</div>
       )}

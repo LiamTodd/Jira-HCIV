@@ -43,6 +43,41 @@ export const combinedClassificationPrepFunc = (data, showNonHci) => {
   };
 };
 
+export const combinedClassificationPriorityGroupedPrepFunc = (
+  data,
+  showNonHci,
+  priorities
+) => {
+  const datasets = [];
+  const labels = Object.keys(getNewClassificationCount(showNonHci));
+  priorities.forEach((priority) => {
+    const dataSet = {
+      label: priority.name,
+      backgroundColor: priority.statusColor,
+    };
+    const classificationCount = getNewClassificationCount(showNonHci);
+    data
+      .filter((issue) => issue.priority === priority.name)
+      .forEach((issue) => {
+        const classification = combineClassifications(
+          issue.summary.predictions,
+          issue.description.predictions
+        );
+        for (const [key, value] of Object.entries(classification)) {
+          if (value && classificationCount[key] !== undefined) {
+            classificationCount[key]++;
+          }
+        }
+      });
+    dataSet.data = Object.values(classificationCount);
+    datasets.push(dataSet);
+  });
+  return {
+    labels: labels,
+    datasets: datasets,
+  };
+};
+
 export const summaryClassificationPrepFunc = (data, showNonHci) => {
   const classificationCount = getNewClassificationCount(showNonHci);
   data.forEach((issue) => {
