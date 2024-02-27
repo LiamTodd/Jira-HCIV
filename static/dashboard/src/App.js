@@ -11,16 +11,13 @@ import {
   getAllStatuses,
 } from './utils/requestJiraUtils';
 import { constructBulkPayload } from './utils/misc';
-import VerticalBar from './components/VerticalBar';
 import GroupedBar from './components/groupedBar';
 import {
-  combinedClassificationPrepFunc,
   combinedClassificationPriorityGroupedPrepFunc,
   combinedClassificationStatusGroupedPrepFunc,
-  descriptionClassificationPrepFunc,
-  summaryClassificationPrepFunc,
 } from './utils/dataPrepFunctions';
 import Checkbox from '@mui/material/Checkbox';
+import BasicDistributionGroup from './components/BasicDistributionGroup';
 
 function App() {
   const [predictionData, setPredictionData] = useState();
@@ -68,29 +65,14 @@ function App() {
     <>
       <Checkbox checked={showNonHci} onChange={handleSetShowNonHci}></Checkbox>
       {predictionData ? (
-        <>
-          <VerticalBar
-            data={predictionData}
-            dataPrepFunc={combinedClassificationPrepFunc}
-            title={'Overall Issue Classification'}
-            showNonHci={showNonHci}
-          ></VerticalBar>
-          <VerticalBar
-            data={predictionData}
-            dataPrepFunc={summaryClassificationPrepFunc}
-            title={'Issue Summary Classification'}
-            showNonHci={showNonHci}
-          ></VerticalBar>
-          <VerticalBar
-            data={predictionData}
-            dataPrepFunc={descriptionClassificationPrepFunc}
-            title={'Issue Description Classification'}
-            showNonHci={showNonHci}
-          ></VerticalBar>
-        </>
+        <BasicDistributionGroup
+          data={predictionData}
+          showNonHci={showNonHci}
+        ></BasicDistributionGroup>
       ) : (
         <div>Loading...</div>
       )}
+
       {predictionData && priorities ? (
         <GroupedBar
           data={predictionData}

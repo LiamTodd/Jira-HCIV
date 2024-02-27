@@ -2,6 +2,7 @@ import {
   APP_USAGE,
   INCLUSIVENESS,
   NON_HUMAN_CENTRIC,
+  THEME_COLOURS,
   USER_REACTION,
 } from '../constants';
 import { cleanLabel } from './stringUtils';
@@ -146,4 +147,12 @@ export const descriptionClassificationPrepFunc = (data, showNonHci) => {
     labels: Object.keys(classificationCount).map((label) => cleanLabel(label)),
     datasets: [{ data: Object.values(classificationCount) }],
   };
+};
+
+export const injectThemeColours = (data) => {
+  const newData = { ...data };
+  newData.datasets.forEach((dataset) => {
+    dataset.backgroundColor = THEME_COLOURS;
+  });
+  return newData;
 };

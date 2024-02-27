@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { injectThemeColours } from '../utils/dataPrepFunctions';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -26,13 +27,10 @@ function VerticalBar({
 }) {
   return (
     <Bar
-      data={dataPrepFunc(data, showNonHci)}
+      data={injectThemeColours(dataPrepFunc(data, showNonHci))}
       options={{
         responsive: true,
         plugins: {
-          legend: {
-            position: 'top',
-          },
           title: {
             display: true,
             text: title,
