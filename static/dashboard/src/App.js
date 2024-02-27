@@ -16,6 +16,7 @@ import GroupedBar from './components/groupedBar';
 import {
   combinedClassificationPrepFunc,
   combinedClassificationPriorityGroupedPrepFunc,
+  combinedClassificationStatusGroupedPrepFunc,
   descriptionClassificationPrepFunc,
   summaryClassificationPrepFunc,
 } from './utils/dataPrepFunctions';
@@ -94,9 +95,20 @@ function App() {
         <GroupedBar
           data={predictionData}
           dataPrepFunc={combinedClassificationPriorityGroupedPrepFunc}
-          title={'HCIs Grouped by Priority'}
+          title={'Human-Centric Issues Grouped by Priority'}
           showNonHci={showNonHci}
           groups={priorities}
+        ></GroupedBar>
+      ) : (
+        <div>Loading...</div>
+      )}
+      {predictionData && statuses ? (
+        <GroupedBar
+          data={predictionData}
+          dataPrepFunc={combinedClassificationStatusGroupedPrepFunc}
+          title={'Human-Centric Issues Grouped by Status'}
+          showNonHci={showNonHci}
+          groups={statuses}
         ></GroupedBar>
       ) : (
         <div>Loading...</div>

@@ -4,6 +4,7 @@ import {
   NON_HUMAN_CENTRIC,
   USER_REACTION,
 } from '../constants';
+import { cleanLabel } from './stringUtils';
 
 const combineClassifications = (class1, class2) => {
   const res = {};
@@ -38,7 +39,7 @@ export const combinedClassificationPrepFunc = (data, showNonHci) => {
     }
   });
   return {
-    labels: Object.keys(classificationCount),
+    labels: Object.keys(classificationCount).map((label) => cleanLabel(label)),
     datasets: [{ data: Object.values(classificationCount) }],
   };
 };
@@ -49,7 +50,9 @@ export const combinedClassificationPriorityGroupedPrepFunc = (
   priorities
 ) => {
   const datasets = [];
-  const labels = Object.keys(getNewClassificationCount(showNonHci));
+  const labels = Object.keys(getNewClassificationCount(showNonHci)).map(
+    (label) => cleanLabel(label)
+  );
   priorities.forEach((priority) => {
     const dataSet = {
       label: priority.name,
@@ -58,6 +61,43 @@ export const combinedClassificationPriorityGroupedPrepFunc = (
     const classificationCount = getNewClassificationCount(showNonHci);
     data
       .filter((issue) => issue.priority === priority.name)
+      .forEach((issue) => {
+        const classification = combineClassifications(
+          issue.summary.predictions,
+          issue.description.predictions
+        );
+        for (const [key, value] of Object.entries(classification)) {
+          if (value && classificationCount[key] !== undefined) {
+            classificationCount[key]++;
+          }
+        }
+      });
+    dataSet.data = Object.values(classificationCount);
+    datasets.push(dataSet);
+  });
+  return {
+    labels: labels,
+    datasets: datasets,
+  };
+};
+
+export const combinedClassificationStatusGroupedPrepFunc = (
+  data,
+  showNonHci,
+  statuses
+) => {
+  const datasets = [];
+  const labels = Object.keys(getNewClassificationCount(showNonHci)).map(
+    (label) => cleanLabel(label)
+  );
+  statuses.forEach((status) => {
+    const dataSet = {
+      label: status.name,
+      backgroundColor: status.statusCategory.colorName,
+    };
+    const classificationCount = getNewClassificationCount(showNonHci);
+    data
+      .filter((issue) => issue.status === status.name)
       .forEach((issue) => {
         const classification = combineClassifications(
           issue.summary.predictions,
@@ -88,7 +128,7 @@ export const summaryClassificationPrepFunc = (data, showNonHci) => {
     }
   });
   return {
-    labels: Object.keys(classificationCount),
+    labels: Object.keys(classificationCount).map((label) => cleanLabel(label)),
     datasets: [{ data: Object.values(classificationCount) }],
   };
 };
@@ -103,7 +143,7 @@ export const descriptionClassificationPrepFunc = (data, showNonHci) => {
     }
   });
   return {
-    labels: Object.keys(classificationCount),
+    labels: Object.keys(classificationCount).map((label) => cleanLabel(label)),
     datasets: [{ data: Object.values(classificationCount) }],
   };
 };
