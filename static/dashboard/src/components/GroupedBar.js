@@ -9,7 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { Checkbox } from '@mui/material';
+import { Checkbox, Typography } from '@mui/material';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -27,12 +27,6 @@ function GroupedBar({
   groups,
 }) {
   const [options, setOptions] = useState({
-    plugins: {
-      title: {
-        display: true,
-        text: title,
-      },
-    },
     responsive: true,
     interaction: {
       mode: 'index',
@@ -59,6 +53,7 @@ function GroupedBar({
   return (
     <>
       <Checkbox onChange={handleSetStacked}></Checkbox>
+      <Typography>{title}</Typography>
       <Bar
         data={dataPrepFunc(data, showNonHci, groups)}
         options={options}

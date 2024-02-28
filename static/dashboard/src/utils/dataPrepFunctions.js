@@ -1,30 +1,6 @@
-import {
-  APP_USAGE,
-  INCLUSIVENESS,
-  NON_HUMAN_CENTRIC,
-  THEME_COLOURS_DICT,
-  USER_REACTION,
-} from '../constants';
+import { THEME_COLOURS_DICT } from '../constants';
+import { combineClassifications, getNewClassificationCount } from './misc';
 import { cleanLabel } from './stringUtils';
-
-const combineClassifications = (class1, class2) => {
-  const res = {};
-  res[APP_USAGE] = class1[APP_USAGE] || class2[APP_USAGE];
-  res[INCLUSIVENESS] = class1[INCLUSIVENESS] || class2[INCLUSIVENESS];
-  res[USER_REACTION] = class1[USER_REACTION] || class2[USER_REACTION];
-  res[NON_HUMAN_CENTRIC] =
-    class1[NON_HUMAN_CENTRIC] && class2[NON_HUMAN_CENTRIC];
-  return res;
-};
-
-const getNewClassificationCount = (showNonHci) => {
-  const classificationCount = {};
-  classificationCount[APP_USAGE] = 0;
-  classificationCount[INCLUSIVENESS] = 0;
-  classificationCount[USER_REACTION] = 0;
-  if (showNonHci) classificationCount[NON_HUMAN_CENTRIC] = 0;
-  return classificationCount;
-};
 
 const getNewGroupCount = (groups) => {
   const groupCount = {};
@@ -33,7 +9,6 @@ const getNewGroupCount = (groups) => {
   });
   return groupCount;
 };
-
 export const combinedClassificationPrepFunc = (data, showNonHci) => {
   const classificationCount = getNewClassificationCount(showNonHci);
   data.forEach((issue) => {

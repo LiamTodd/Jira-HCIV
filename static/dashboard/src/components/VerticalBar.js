@@ -9,6 +9,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { injectThemeColours } from '../utils/dataPrepFunctions';
+import { Typography } from '@mui/material';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip);
 
 function VerticalBar({
@@ -18,21 +19,20 @@ function VerticalBar({
   title = 'Vertical Bar Chart',
 }) {
   return (
-    <Bar
-      data={injectThemeColours(dataPrepFunc(data, showNonHci))}
-      options={{
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: title,
+    <>
+      <Typography>{title}</Typography>
+      <Bar
+        data={injectThemeColours(dataPrepFunc(data, showNonHci))}
+        options={{
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false,
+            },
           },
-          legend: {
-            display: false,
-          },
-        },
-      }}
-    ></Bar>
+        }}
+      ></Bar>
+    </>
   );
 }
 

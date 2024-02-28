@@ -11,7 +11,7 @@ import {
   getAllStatuses,
 } from './utils/requestJiraUtils';
 import { constructBulkPayload } from './utils/misc';
-import GroupedBar from './components/groupedBar';
+import GroupedBar from './components/GroupedBar';
 import {
   combinedClassificationPriorityGroupedPrepFunc,
   combinedClassificationStatusGroupedPrepFunc,
@@ -19,6 +19,7 @@ import {
 import Checkbox from '@mui/material/Checkbox';
 import BasicDistributionGroup from './components/BasicDistributionGroup';
 import { Box, Grid } from '@mui/material';
+import KeyStats from './components/KeyStats';
 
 function App() {
   const [predictionData, setPredictionData] = useState();
@@ -35,25 +36,27 @@ function App() {
     });
   }, []);
   useEffect(() => {
-    getAllIssues(FIELDS_FOR_CLASSIFIER.concat(ADDITIONAL_FIELDS)).then(
-      (issueData) => {
-        issueData.forEach((item, index) => {
-          item.id = index;
-        });
-        invoke(BULK_PREDICT_FUNCTION_KEY, constructBulkPayload(issueData)).then(
-          (returnedData) => {
-            returnedData.forEach((item, index) => {
-              // recover fields which were not sent to classifier
-              // assumes the structure of additional fields - subject to break
-              ADDITIONAL_FIELDS.forEach((field) => {
-                item[field] = issueData[index].fields[field].name;
-              });
+    getAllIssues(
+      FIELDS_FOR_CLASSIFIER.concat(ADDITIONAL_FIELDS.map((field) => field.name))
+    ).then((issueData) => {
+      issueData.forEach((item, index) => {
+        item.id = index;
+      });
+      invoke(BULK_PREDICT_FUNCTION_KEY, constructBulkPayload(issueData)).then(
+        (returnedData) => {
+          returnedData.forEach((item, index) => {
+            // recover fields which were not sent to classifier
+            ADDITIONAL_FIELDS.forEach((field) => {
+              if (issueData[index].fields[field.name] !== null) {
+                item[field.name] =
+                  issueData[index].fields[field.name][field.prop];
+              }
             });
-            setPredictionData(returnedData);
-          }
-        );
-      }
-    );
+          });
+          setPredictionData(returnedData);
+        }
+      );
+    });
   }, []);
 
   const [showNonHci, setShowNonHci] = useState(false);
@@ -82,7 +85,11 @@ function App() {
             )}
           </Grid>
           <Grid item xs={12}>
-            <div>Key Stats</div>
+            {predictionData ? (
+              <KeyStats data={predictionData}></KeyStats>
+            ) : (
+              <div>Loading...</div>
+            )}
           </Grid>
         </Grid>
 
