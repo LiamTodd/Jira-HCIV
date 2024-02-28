@@ -85,8 +85,12 @@ function App() {
             )}
           </Grid>
           <Grid item xs={12}>
-            {predictionData ? (
-              <KeyStats data={predictionData}></KeyStats>
+            {predictionData && statuses && priorities ? (
+              <KeyStats
+                data={predictionData}
+                statuses={statuses}
+                priorities={priorities}
+              ></KeyStats>
             ) : (
               <div>Loading...</div>
             )}

@@ -1,5 +1,9 @@
 import { NON_HUMAN_CENTRIC } from '../constants';
-import { combineClassifications, getNewClassificationCount } from './misc';
+import {
+  combineClassifications,
+  getNewClassificationCount,
+  getNewGroupCount,
+} from './misc';
 
 // how many of the total issues are hc
 export const proportionHci = (issues) => {
@@ -93,14 +97,56 @@ export const topHciReportersByCategory = (issues) => {
   return topHciUsersByCategory(issues, 'reporter');
 };
 
+const hciGenericFieldProportion = (issues, groups, field) => {
+  const result = getNewGroupCount(groups);
+  issues
+    .filter((issue) => {
+      const classification = combineClassifications(
+        issue.description.predictions,
+        issue.summary.predictions
+      );
+      return !classification[NON_HUMAN_CENTRIC];
+    })
+    .forEach((issue) => {
+      result[issue[field]]++;
+    });
+  return result;
+};
+
+const hciGenericFieldProportionByCategory = (issues, groups, field) => {
+  const result = {};
+  Object.keys(getNewClassificationCount()).forEach((category) => {
+    result[category] = getNewGroupCount(groups);
+    issues
+      .filter((issue) => {
+        const classification = combineClassifications(
+          issue.description.predictions,
+          issue.summary.predictions
+        );
+        return classification[category];
+      })
+      .forEach((issue) => {
+        result[category][issue[field]]++;
+      });
+  });
+  return result;
+};
 // how is progress on hcis
-export const hciStatusProportion = (data) => {};
-export const hciStatusProportionByCategory = (data) => {};
+export const hciStatusProportion = (issues, statuses) => {
+  return hciGenericFieldProportion(issues, statuses, 'status');
+};
+export const hciStatusProportionByCategory = (issues, statuses) => {
+  return hciGenericFieldProportionByCategory(issues, statuses, 'status');
+};
 
 // how are hcis being prioritised
-export const hciPriorityProportion = (data) => {};
-export const hciPriorityProportionByCategory = (data) => {};
+export const hciPriorityProportion = (issues, priorities) => {
+  return hciGenericFieldProportion(issues, priorities, 'priority');
+};
+export const hciPriorityProportionByCategory = (issues, priorities) => {
+  return hciGenericFieldProportionByCategory(issues, priorities, 'priority');
+};
 
 // how old are hcis comparatively
-export const averageIssueage = (data) => {};
-export const averageHciIssueage = (data) => {};
+export const averageIssueAge = (issues) => {};
+export const averageHciIssueAge = (issues) => {};

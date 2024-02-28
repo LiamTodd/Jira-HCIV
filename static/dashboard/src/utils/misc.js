@@ -39,3 +39,11 @@ export const getNewClassificationCount = (includeNonHci = true) => {
   if (includeNonHci) classificationCount[NON_HUMAN_CENTRIC] = 0;
   return classificationCount;
 };
+
+export const getNewGroupCount = (groups) => {
+  const groupCount = {};
+  groups.forEach((group) => {
+    groupCount[group.name] = 0;
+  });
+  return groupCount;
+};

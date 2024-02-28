@@ -1,14 +1,11 @@
 import { THEME_COLOURS_DICT } from '../constants';
-import { combineClassifications, getNewClassificationCount } from './misc';
+import {
+  combineClassifications,
+  getNewClassificationCount,
+  getNewGroupCount,
+} from './misc';
 import { cleanLabel } from './stringUtils';
 
-const getNewGroupCount = (groups) => {
-  const groupCount = {};
-  groups.forEach((group) => {
-    groupCount[group.name] = 0;
-  });
-  return groupCount;
-};
 export const combinedClassificationPrepFunc = (data, showNonHci) => {
   const classificationCount = getNewClassificationCount(showNonHci);
   data.forEach((issue) => {
