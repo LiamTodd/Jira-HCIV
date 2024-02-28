@@ -33,13 +33,65 @@ export const proportionHciByCategory = (issues) => {
   return result;
 };
 
+const topHciUsers = (issues, userType) => {
+  const result = {};
+  issues.forEach((issue) => {
+    const user = issue[userType];
+    const classification = combineClassifications(
+      issue.summary.predictions,
+      issue.description.predictions
+    );
+    // if classification is NOT non human-centric and user is defined
+    if (!classification[NON_HUMAN_CENTRIC] && user) {
+      if (result[user]) {
+        // record exists, increment count
+        result[user]++;
+      } else {
+        // start new record
+        result[user] = 1;
+      }
+    }
+  });
+  return result;
+};
+
+const topHciUsersByCategory = (issues, userType) => {
+  const result = {};
+  Object.keys(getNewClassificationCount()).forEach((category) => {
+    result[category] = {};
+    issues.forEach((issue) => {
+      const user = issue[userType];
+      const classification = combineClassifications(
+        issue.summary.predictions,
+        issue.description.predictions
+      );
+      if (classification[category] && user) {
+        if (result[category][user]) {
+          result[category][user]++;
+        } else {
+          result[category][user] = 1;
+        }
+      }
+    });
+  });
+  return result;
+};
+
 // which users are working on hcis
-export const topHciAssignees = (data) => {};
-export const topHciAssigneesByCategory = (data) => {};
+export const topHciAssignees = (issues) => {
+  return topHciUsers(issues, 'assignee');
+};
+export const topHciAssigneesByCategory = (issues) => {
+  return topHciUsersByCategory(issues, 'assignee');
+};
 
 // which users are reporting hcis
-export const topHciReporters = (data) => {};
-export const topHciReportersByCategory = (data) => {};
+export const topHciReporters = (issues) => {
+  return topHciUsers(issues, 'reporter');
+};
+export const topHciReportersByCategory = (issues) => {
+  return topHciUsersByCategory(issues, 'reporter');
+};
 
 // how is progress on hcis
 export const hciStatusProportion = (data) => {};
