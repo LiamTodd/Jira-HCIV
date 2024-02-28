@@ -5,7 +5,7 @@ import {
   summaryClassificationPrepFunc,
 } from '../utils/dataPrepFunctions';
 import VerticalBar from './VerticalBar';
-import Pie from './pie';
+import Pie from './Pie';
 import { DISTRIBUTION_TYPE_PIE, DISTRIBUTION_TYPE_BAR } from '../constants';
 import { Grid, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import BarChartIcon from '@mui/icons-material/BarChart';

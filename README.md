@@ -6,5 +6,10 @@
 - replace temporary url in manifest.yml and constants.js
 - forge deploy
 - forge install --upgrade
+
+### Tunnelling
 - forge tunnel
-- custom UIs: npm start
+- npm start
+    - for custom UI
+    - ensure tunnel port is specified in manifest.yml
+    - no need to reload pages; just save custom UI code

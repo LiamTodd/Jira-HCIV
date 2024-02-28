@@ -9,7 +9,9 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { Checkbox, Typography } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -19,40 +21,72 @@ ChartJS.register(
   Legend
 );
 
+const STACKED_OPTION = {
+  x: {
+    stacked: true,
+  },
+  y: {
+    stacked: true,
+  },
+};
+
 function GroupedBar({
   data,
   showNonHci,
   title = 'Grouped Vertical Bar',
   dataPrepFunc,
   groups,
+  stacked,
 }) {
-  const [options, setOptions] = useState({
-    responsive: true,
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
-  });
-
-  const handleSetStacked = (event) => {
-    const newOptions = { ...options };
-    if (event.target.checked) {
-      newOptions.scales = {
-        x: {
-          stacked: true,
+  const [options, setOptions] = useState(() => {
+    if (stacked) {
+      return {
+        responsive: true,
+        interaction: {
+          mode: 'index',
+          intersect: false,
         },
-        y: {
-          stacked: true,
-        },
+        scales: STACKED_OPTION,
       };
     } else {
-      newOptions.scales = null;
+      return {
+        responsive: true,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+      };
     }
-    setOptions(newOptions);
+  });
+
+  const handleSetIsStacked = (event, newIsStacked) => {
+    if (newIsStacked !== null) {
+      const newOptions = { ...options };
+      setIsStacked(newIsStacked);
+      if (newIsStacked) {
+        newOptions.scales = STACKED_OPTION;
+      } else {
+        newOptions.scales = null;
+      }
+      setOptions(newOptions);
+    }
   };
+  const [isStacked, setIsStacked] = useState(stacked);
+
   return (
     <>
-      <Checkbox onChange={handleSetStacked}></Checkbox>
+      <ToggleButtonGroup
+        exclusive
+        onChange={handleSetIsStacked}
+        value={isStacked}
+      >
+        <ToggleButton value={true}>
+          <StackedBarChartIcon />
+        </ToggleButton>
+        <ToggleButton value={false}>
+          <BarChartIcon />
+        </ToggleButton>
+      </ToggleButtonGroup>
       <Typography>{title}</Typography>
       <Bar
         data={dataPrepFunc(data, showNonHci, groups)}
