@@ -6,3 +6,5 @@
 - replace temporary url in manifest.yml and constants.js
 - forge deploy
 - forge install --upgrade
+- forge tunnel
+- custom UIs: npm start

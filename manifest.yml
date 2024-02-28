@@ -21,6 +21,8 @@ resources:
     path: src/frontend/issuePanel.jsx
   - key: project-page
     path: static/dashboard/build
+    tunnel: # for local devving of custom UI
+      port: 3000
 app:
   id: ari:cloud:ecosystem::app/2b7a5677-c171-4bca-9814-818e8bf2943d
 permissions:
