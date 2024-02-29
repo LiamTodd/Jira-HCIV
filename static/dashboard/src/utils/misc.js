@@ -47,3 +47,10 @@ export const getNewGroupCount = (groups) => {
   });
   return groupCount;
 };
+
+export const getMaxCount = (e1, e2) => {
+  if (e1[1] > e2[1]) {
+    return e1;
+  }
+  return e2;
+};

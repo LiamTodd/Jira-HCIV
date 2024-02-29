@@ -24,7 +24,6 @@ import { AppBar, Box, Grid, Typography } from '@mui/material';
 import KeyStats from './components/KeyStats';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 
 function App() {
   const [predictionData, setPredictionData] = useState();
@@ -75,7 +74,6 @@ function App() {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       {/* dashboard tools */}
       <AppBar
-        // position='static'
         sx={{
           backgroundColor: WHITE,
           color: 'black',
@@ -100,20 +98,10 @@ function App() {
         sx={{
           backgroundColor: DASHBOARD_BACKGROUND,
           padding: '1vw',
-          marginTop: '15vh',
+          marginTop: '24vh',
         }}
       >
-        {/* basic distributions - 3 charts */}
-        <Grid container item xs={12}>
-          {predictionData ? (
-            <BasicDistributionGroup
-              data={predictionData}
-              showNonHci={showNonHci}
-            ></BasicDistributionGroup>
-          ) : (
-            <div>Loading...</div>
-          )}
-
+        <Grid container spacing={2}>
           {/* key stats */}
           <Grid item xs={12}>
             {predictionData && statuses && priorities ? (
@@ -126,36 +114,47 @@ function App() {
               <div>Loading...</div>
             )}
           </Grid>
-        </Grid>
-        <Grid container xs={12}>
-          <Grid item xs={6}>
-            {predictionData && priorities ? (
-              <GroupedBar
+          {/* basic distributions - 3 charts */}
+          <Grid container item xs={12}>
+            {predictionData ? (
+              <BasicDistributionGroup
                 data={predictionData}
-                dataPrepFunc={combinedClassificationPriorityGroupedPrepFunc}
-                title={'Human-Centric Issues Grouped by Priority'}
                 showNonHci={showNonHci}
-                groups={priorities}
-                stacked={true}
-              ></GroupedBar>
+              ></BasicDistributionGroup>
             ) : (
               <div>Loading...</div>
             )}
           </Grid>
+          <Grid container xs={12} spacing={2}>
+            <Grid item xs={6}>
+              {predictionData && priorities ? (
+                <GroupedBar
+                  data={predictionData}
+                  dataPrepFunc={combinedClassificationPriorityGroupedPrepFunc}
+                  title={'Human-Centric Issues Grouped by Priority'}
+                  showNonHci={showNonHci}
+                  groups={priorities}
+                  stacked={true}
+                ></GroupedBar>
+              ) : (
+                <div>Loading...</div>
+              )}
+            </Grid>
 
-          <Grid item xs={6}>
-            {predictionData && statuses ? (
-              <GroupedBar
-                data={predictionData}
-                dataPrepFunc={combinedClassificationStatusGroupedPrepFunc}
-                title={'Human-Centric Issues Grouped by Status'}
-                showNonHci={showNonHci}
-                groups={statuses}
-                stacked={false}
-              ></GroupedBar>
-            ) : (
-              <div>Loading...</div>
-            )}
+            <Grid item xs={6}>
+              {predictionData && statuses ? (
+                <GroupedBar
+                  data={predictionData}
+                  dataPrepFunc={combinedClassificationStatusGroupedPrepFunc}
+                  title={'Human-Centric Issues Grouped by Status'}
+                  showNonHci={showNonHci}
+                  groups={statuses}
+                  stacked={false}
+                ></GroupedBar>
+              ) : (
+                <div>Loading...</div>
+              )}
+            </Grid>
           </Grid>
         </Grid>
       </Box>

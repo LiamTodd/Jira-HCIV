@@ -9,6 +9,8 @@
 
 ### Tunnelling
 - forge tunnel
+    - error: {"__tunnel_error__":true,"name":"NgrokError","attributes":{}}
+        - toggle 'region: us' in ngrok config file
 - npm start
     - for custom UI
     - ensure tunnel port is specified in manifest.yml

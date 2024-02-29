@@ -8,7 +8,7 @@ modules:
       title: JHCIV Issue Panel
       icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
   jira:projectPage:
-    - key: jchiv-project-page
+    - key: jhciv-project-page
       resource: project-page
       resolver:
         function: resolver
@@ -21,7 +21,7 @@ resources:
     path: src/frontend/issuePanel.jsx
   - key: project-page
     path: static/dashboard/build
-    tunnel: # for local devving of custom UI
+    tunnel:
       port: 3000
 app:
   id: ari:cloud:ecosystem::app/2b7a5677-c171-4bca-9814-818e8bf2943d
@@ -31,7 +31,7 @@ permissions:
   external:
     fetch:
       backend:
-        - 'https://74da-2001-8003-401a-c800-b1d6-af9c-cc64-ea0e.ngrok-free.app/*' # change this when new tunnel is used
+        - https://d0ae-2001-8003-401a-c800-b1d6-af9c-cc64-ea0e.ngrok-free.app/*
   content:
     styles:
       - unsafe-inline
