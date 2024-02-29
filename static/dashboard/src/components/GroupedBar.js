@@ -9,7 +9,12 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import {
+  Card,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from '@mui/material';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
 ChartJS.register(
@@ -74,7 +79,15 @@ function GroupedBar({
   const [isStacked, setIsStacked] = useState(stacked);
 
   return (
-    <>
+    <Card
+      variant='outlined'
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '1vw',
+      }}
+    >
+      <Typography variant='h6'>{title}</Typography>
       <ToggleButtonGroup
         exclusive
         onChange={handleSetIsStacked}
@@ -87,12 +100,12 @@ function GroupedBar({
           <BarChartIcon />
         </ToggleButton>
       </ToggleButtonGroup>
-      <Typography>{title}</Typography>
+
       <Bar
         data={dataPrepFunc(data, showNonHci, groups)}
         options={options}
       ></Bar>
-    </>
+    </Card>
   );
 }
 

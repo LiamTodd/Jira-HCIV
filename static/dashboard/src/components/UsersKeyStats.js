@@ -17,7 +17,6 @@ export default function UsersKeyStats({ users, usersCategorised, preText }) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  console.log(users, usersCategorised);
   return (
     <Card
       variant='outlined'

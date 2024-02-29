@@ -7,7 +7,13 @@ import {
 import VerticalBar from './VerticalBar';
 import Pie from './Pie';
 import { DISTRIBUTION_TYPE_PIE, DISTRIBUTION_TYPE_BAR } from '../constants';
-import { Grid, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import {
+  Card,
+  Grid,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from '@mui/material';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import PieChartIcon from '@mui/icons-material/PieChart';
 
@@ -21,79 +27,92 @@ function BasicDistributionGroup({ data, showNonHci }) {
   };
 
   return (
-    <Grid container item spacing={2}>
-      <Grid item xs={12}>
-        <ToggleButtonGroup
-          value={chartType}
-          exclusive
-          onChange={handleSetChartType}
-        >
-          <ToggleButton value={DISTRIBUTION_TYPE_PIE}>
-            <PieChartIcon />
-          </ToggleButton>
-          <ToggleButton value={DISTRIBUTION_TYPE_BAR}>
-            <BarChartIcon />
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Grid>
+    <Card
+      variant='outlined'
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '1vw',
+      }}
+    >
+      <Typography variant='h6'>
+        Human-Centric Issue Classification Distribution
+      </Typography>
 
-      {chartType === DISTRIBUTION_TYPE_BAR && (
-        <>
-          <Grid item xs={4}>
-            <VerticalBar
-              data={data}
-              dataPrepFunc={combinedClassificationPrepFunc}
-              title={'Overall Issue Classification'}
-              showNonHci={showNonHci}
-            ></VerticalBar>
-          </Grid>
-          <Grid item xs={4}>
-            <VerticalBar
-              data={data}
-              dataPrepFunc={summaryClassificationPrepFunc}
-              title={'Issue Summary Classification'}
-              showNonHci={showNonHci}
-            ></VerticalBar>
-          </Grid>
-          <Grid item xs={4}>
-            <VerticalBar
-              data={data}
-              dataPrepFunc={descriptionClassificationPrepFunc}
-              title={'Issue Description Classification'}
-              showNonHci={showNonHci}
-            ></VerticalBar>
-          </Grid>
-        </>
-      )}
-      {chartType === DISTRIBUTION_TYPE_PIE && (
-        <>
-          <Grid item xs={4}>
-            <Pie
-              data={data}
-              dataPrepFunc={combinedClassificationPrepFunc}
-              title={'Overall Issue Classification'}
-              showNonHci={showNonHci}
-            ></Pie>
-          </Grid>
-          <Grid item xs={4}>
-            <Pie
-              data={data}
-              dataPrepFunc={summaryClassificationPrepFunc}
-              title={'Issue Summary Classification'}
-              showNonHci={showNonHci}
-            ></Pie>
-          </Grid>
-          <Grid item xs={4}>
-            <Pie
-              data={data}
-              dataPrepFunc={descriptionClassificationPrepFunc}
-              title={'Issue Description Classification'}
-              showNonHci={showNonHci}
-            ></Pie>
-          </Grid>
-        </>
-      )}
-    </Grid>
+      <Grid container item spacing={2}>
+        <Grid item xs={12}>
+          <ToggleButtonGroup
+            value={chartType}
+            exclusive
+            onChange={handleSetChartType}
+          >
+            <ToggleButton value={DISTRIBUTION_TYPE_PIE}>
+              <PieChartIcon />
+            </ToggleButton>
+            <ToggleButton value={DISTRIBUTION_TYPE_BAR}>
+              <BarChartIcon />
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Grid>
+
+        {chartType === DISTRIBUTION_TYPE_BAR && (
+          <>
+            <Grid item xs={4}>
+              <VerticalBar
+                data={data}
+                dataPrepFunc={combinedClassificationPrepFunc}
+                title={'Overall Issue Classification'}
+                showNonHci={showNonHci}
+              ></VerticalBar>
+            </Grid>
+            <Grid item xs={4}>
+              <VerticalBar
+                data={data}
+                dataPrepFunc={summaryClassificationPrepFunc}
+                title={'Issue Summary Classification'}
+                showNonHci={showNonHci}
+              ></VerticalBar>
+            </Grid>
+            <Grid item xs={4}>
+              <VerticalBar
+                data={data}
+                dataPrepFunc={descriptionClassificationPrepFunc}
+                title={'Issue Description Classification'}
+                showNonHci={showNonHci}
+              ></VerticalBar>
+            </Grid>
+          </>
+        )}
+        {chartType === DISTRIBUTION_TYPE_PIE && (
+          <>
+            <Grid item xs={4}>
+              <Pie
+                data={data}
+                dataPrepFunc={combinedClassificationPrepFunc}
+                title={'Overall Issue Classification'}
+                showNonHci={showNonHci}
+              ></Pie>
+            </Grid>
+            <Grid item xs={4}>
+              <Pie
+                data={data}
+                dataPrepFunc={summaryClassificationPrepFunc}
+                title={'Issue Summary Classification'}
+                showNonHci={showNonHci}
+              ></Pie>
+            </Grid>
+            <Grid item xs={4}>
+              <Pie
+                data={data}
+                dataPrepFunc={descriptionClassificationPrepFunc}
+                title={'Issue Description Classification'}
+                showNonHci={showNonHci}
+              ></Pie>
+            </Grid>
+          </>
+        )}
+      </Grid>
+    </Card>
   );
 }
 

@@ -102,7 +102,6 @@ function App() {
         }}
       >
         <Grid container spacing={2}>
-          {/* key stats */}
           <Grid item xs={12}>
             {predictionData && statuses && priorities ? (
               <KeyStats
@@ -114,7 +113,7 @@ function App() {
               <div>Loading...</div>
             )}
           </Grid>
-          {/* basic distributions - 3 charts */}
+
           <Grid container item xs={12}>
             {predictionData ? (
               <BasicDistributionGroup
@@ -126,36 +125,34 @@ function App() {
             )}
           </Grid>
 
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              {predictionData && priorities ? (
-                <GroupedBar
-                  data={predictionData}
-                  dataPrepFunc={combinedClassificationPriorityGroupedPrepFunc}
-                  title={'Human-Centric Issues Grouped by Priority'}
-                  showNonHci={showNonHci}
-                  groups={priorities}
-                  stacked={true}
-                ></GroupedBar>
-              ) : (
-                <div>Loading...</div>
-              )}
-            </Grid>
+          <Grid item xs={6}>
+            {predictionData && priorities ? (
+              <GroupedBar
+                data={predictionData}
+                dataPrepFunc={combinedClassificationPriorityGroupedPrepFunc}
+                title={'Human-Centric Issues Grouped by Priority'}
+                showNonHci={showNonHci}
+                groups={priorities}
+                stacked={true}
+              ></GroupedBar>
+            ) : (
+              <div>Loading...</div>
+            )}
+          </Grid>
 
-            <Grid item xs={6}>
-              {predictionData && statuses ? (
-                <GroupedBar
-                  data={predictionData}
-                  dataPrepFunc={combinedClassificationStatusGroupedPrepFunc}
-                  title={'Human-Centric Issues Grouped by Status'}
-                  showNonHci={showNonHci}
-                  groups={statuses}
-                  stacked={false}
-                ></GroupedBar>
-              ) : (
-                <div>Loading...</div>
-              )}
-            </Grid>
+          <Grid item xs={6}>
+            {predictionData && statuses ? (
+              <GroupedBar
+                data={predictionData}
+                dataPrepFunc={combinedClassificationStatusGroupedPrepFunc}
+                title={'Human-Centric Issues Grouped by Status'}
+                showNonHci={showNonHci}
+                groups={statuses}
+                stacked={false}
+              ></GroupedBar>
+            ) : (
+              <div>Loading...</div>
+            )}
           </Grid>
         </Grid>
       </Box>
