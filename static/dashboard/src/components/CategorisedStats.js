@@ -8,7 +8,6 @@ function CategorisedStats({ data }) {
     <>
       <Typography variant='subtitle1'>By Category</Typography>
       {Object.entries(data).map((category) => {
-        console.log(category);
         if (Object.keys(category[1]).length > 0) {
           const topUser = Object.entries(category[1]).reduce(getMaxCount);
           return (

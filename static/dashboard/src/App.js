@@ -24,8 +24,10 @@ import { AppBar, Box, Grid, Typography } from '@mui/material';
 import KeyStats from './components/KeyStats';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
 function App() {
+  const [originalPredictionData, setOriginalPredictionData] = useState();
   const [predictionData, setPredictionData] = useState();
   const [statuses, setStatuses] = useState();
   const [priorities, setPriorities] = useState();
@@ -53,12 +55,16 @@ function App() {
             // recover fields which were not sent to classifier
             ADDITIONAL_FIELDS.forEach((field) => {
               if (issueData[index].fields[field.name] !== null) {
-                item[field.name] =
-                  issueData[index].fields[field.name][field.prop];
+                if (field.prop !== null) {
+                  item[field.name] =
+                    issueData[index].fields[field.name][field.prop];
+                } else {
+                  item[field.name] = issueData[index].fields[field.name];
+                }
               }
             });
           });
-          setPredictionData(returnedData);
+          setOriginalPredictionData(returnedData);
         }
       );
     });
@@ -69,6 +75,39 @@ function App() {
   const handleSetShowNonHci = (event) => {
     setShowNonHci(event.target.checked);
   };
+
+  const [fromDate, setFromDate] = useState();
+  const [toDate, setToDate] = useState();
+
+  useEffect(() => {
+    if (originalPredictionData !== null) {
+      if (fromDate || toDate) {
+        const filteredPredictionData = originalPredictionData
+          .filter((issue) => {
+            if (fromDate) {
+              return (
+                dayjs(issue.created).isSame(dayjs(fromDate), 'day') ||
+                dayjs(issue.created).isAfter(dayjs(fromDate), 'day')
+              );
+            }
+            return true;
+          })
+          .filter((issue) => {
+            if (fromDate) {
+              return (
+                dayjs(issue.created).isSame(dayjs(toDate), 'day') ||
+                dayjs(issue.created).isBefore(dayjs(toDate), 'day')
+              );
+            }
+            return true;
+          });
+        setPredictionData(filteredPredictionData);
+      } else {
+        // initialisation
+        setPredictionData(originalPredictionData);
+      }
+    }
+  }, [fromDate, toDate, originalPredictionData]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -84,49 +123,71 @@ function App() {
           padding: '1vw',
         }}
       >
-        <Typography>Show Non-Human Centric Issues</Typography>
-        <Checkbox
-          checked={showNonHci}
-          onChange={handleSetShowNonHci}
-        ></Checkbox>
-        <Typography>Filter by Date Raised</Typography>
-        <DatePicker label='From' />
-        <DatePicker label='To' />
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
+            <Typography variant='subtitle1'>
+              Show Non-Human Centric Issues
+            </Typography>
+            <Checkbox
+              checked={showNonHci}
+              onChange={handleSetShowNonHci}
+            ></Checkbox>
+          </Grid>
+
+          <Grid item xs={8}>
+            <Typography variant='subtitle1'>Filter by Date Created</Typography>
+            <Box display='flex' gap={2}>
+              <DatePicker
+                label='From'
+                onChange={(newDate) => setFromDate(newDate)}
+                slotProps={{
+                  field: { clearable: true },
+                }}
+              />
+              <DatePicker
+                label='To'
+                onChange={(newDate) => setToDate(newDate)}
+                slotProps={{
+                  field: { clearable: true },
+                }}
+              />
+            </Box>
+          </Grid>
+        </Grid>
       </AppBar>
 
       <Box
         sx={{
           backgroundColor: DASHBOARD_BACKGROUND,
           padding: '1vw',
-          marginTop: '24vh',
+          marginTop: '30vh',
         }}
       >
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            {predictionData && statuses && priorities ? (
+            {predictionData &&
+            predictionData.length > 0 &&
+            statuses &&
+            priorities ? (
               <KeyStats
                 data={predictionData}
                 statuses={statuses}
                 priorities={priorities}
               ></KeyStats>
-            ) : (
-              <div>Loading...</div>
-            )}
+            ) : null}
           </Grid>
 
           <Grid container item xs={12}>
-            {predictionData ? (
+            {predictionData && predictionData.length > 0 ? (
               <BasicDistributionGroup
                 data={predictionData}
                 showNonHci={showNonHci}
               ></BasicDistributionGroup>
-            ) : (
-              <div>Loading...</div>
-            )}
+            ) : null}
           </Grid>
 
           <Grid item xs={6}>
-            {predictionData && priorities ? (
+            {predictionData && predictionData.length > 0 && priorities ? (
               <GroupedBar
                 data={predictionData}
                 dataPrepFunc={combinedClassificationPriorityGroupedPrepFunc}
@@ -135,13 +196,11 @@ function App() {
                 groups={priorities}
                 stacked={true}
               ></GroupedBar>
-            ) : (
-              <div>Loading...</div>
-            )}
+            ) : null}
           </Grid>
 
           <Grid item xs={6}>
-            {predictionData && statuses ? (
+            {predictionData && predictionData.length > 0 && statuses ? (
               <GroupedBar
                 data={predictionData}
                 dataPrepFunc={combinedClassificationStatusGroupedPrepFunc}
@@ -150,9 +209,7 @@ function App() {
                 groups={statuses}
                 stacked={false}
               ></GroupedBar>
-            ) : (
-              <div>Loading...</div>
-            )}
+            ) : null}
           </Grid>
         </Grid>
       </Box>

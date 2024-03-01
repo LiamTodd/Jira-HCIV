@@ -9,6 +9,7 @@ export const ADDITIONAL_FIELDS = [
   { name: 'status', prop: 'name' },
   { name: 'assignee', prop: 'displayName' },
   { name: 'reporter', prop: 'displayName' },
+  { name: 'created', prop: null },
 ];
 export const DISTRIBUTION_TYPE_BAR = 'bar';
 export const DISTRIBUTION_TYPE_PIE = 'pie';

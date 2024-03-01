@@ -31,7 +31,7 @@ permissions:
   external:
     fetch:
       backend:
-        - https://d0ae-2001-8003-401a-c800-b1d6-af9c-cc64-ea0e.ngrok-free.app/*
+        - https://1647-2001-8003-401a-c800-88b7-9076-6347-44ec.ngrok-free.app/*
   content:
     styles:
       - unsafe-inline
