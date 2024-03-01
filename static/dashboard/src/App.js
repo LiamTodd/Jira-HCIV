@@ -12,7 +12,7 @@ import {
   getAllPriorities,
   getAllStatuses,
 } from './utils/requestJiraUtils';
-import { constructBulkPayload } from './utils/misc';
+import { HideOnScroll, constructBulkPayload } from './utils/misc';
 import GroupedBar from './components/GroupedBar';
 import {
   combinedClassificationPriorityGroupedPrepFunc,
@@ -20,7 +20,7 @@ import {
 } from './utils/dataPrepFunctions';
 import Checkbox from '@mui/material/Checkbox';
 import BasicDistributionGroup from './components/BasicDistributionGroup';
-import { AppBar, Box, Grid, Typography } from '@mui/material';
+import { AppBar, Box, Grid, Slide, Typography } from '@mui/material';
 import KeyStats from './components/KeyStats';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -112,49 +112,53 @@ function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       {/* dashboard tools */}
-      <AppBar
-        sx={{
-          backgroundColor: WHITE,
-          color: 'black',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '1vw',
-        }}
-      >
-        <Grid container spacing={2}>
-          <Grid item xs={4}>
-            <Typography variant='subtitle1'>
-              Show Non-Human Centric Issues
-            </Typography>
-            <Checkbox
-              checked={showNonHci}
-              onChange={handleSetShowNonHci}
-            ></Checkbox>
-          </Grid>
+      <HideOnScroll>
+        <AppBar
+          sx={{
+            backgroundColor: WHITE,
+            color: 'black',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '1vw',
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
+              <Typography variant='subtitle1'>
+                Show Non-Human Centric Issues
+              </Typography>
+              <Checkbox
+                checked={showNonHci}
+                onChange={handleSetShowNonHci}
+              ></Checkbox>
+            </Grid>
 
-          <Grid item xs={8}>
-            <Typography variant='subtitle1'>Filter by Date Created</Typography>
-            <Box display='flex' gap={2}>
-              <DatePicker
-                label='From'
-                onChange={(newDate) => setFromDate(newDate)}
-                slotProps={{
-                  field: { clearable: true },
-                }}
-              />
-              <DatePicker
-                label='To'
-                onChange={(newDate) => setToDate(newDate)}
-                slotProps={{
-                  field: { clearable: true },
-                }}
-              />
-            </Box>
+            <Grid item xs={8}>
+              <Typography variant='subtitle1'>
+                Filter by Date Created
+              </Typography>
+              <Box display='flex' gap={2}>
+                <DatePicker
+                  label='From'
+                  onChange={(newDate) => setFromDate(newDate)}
+                  slotProps={{
+                    field: { clearable: true },
+                  }}
+                />
+                <DatePicker
+                  label='To'
+                  onChange={(newDate) => setToDate(newDate)}
+                  slotProps={{
+                    field: { clearable: true },
+                  }}
+                />
+              </Box>
+            </Grid>
           </Grid>
-        </Grid>
-      </AppBar>
+        </AppBar>
+      </HideOnScroll>
 
       <Box
         sx={{

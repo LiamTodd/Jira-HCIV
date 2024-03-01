@@ -27,7 +27,7 @@ function ProportionKeyStats({ proportion, proportionCategorised }) {
     >
       <CardContent>
         <Typography variant='h3'>{proportion.toFixed(1)}%</Typography>
-        <Box display='flex'>
+        <Box display='flex' alignItems='center'>
           <Typography variant='caption'>
             of issues are{' '}
             <Typography variant='body1' display='inline'>

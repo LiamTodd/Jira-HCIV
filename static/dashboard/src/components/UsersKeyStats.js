@@ -29,7 +29,7 @@ export default function UsersKeyStats({ users, usersCategorised, preText }) {
         <Typography variant='h3'>
           {Object.entries(users).reduce(getMaxCount)[0]}
         </Typography>
-        <Box display='flex'>
+        <Box display='flex' alignItems='center'>
           <Typography variant='caption'>
             {preText}{' '}
             <Typography variant='body1' display='inline'>

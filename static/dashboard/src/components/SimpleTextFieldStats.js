@@ -29,7 +29,7 @@ function SimpleTextFieldStats({ data, dataCategorised }) {
         <Typography variant='h3'>
           {Object.entries(data).reduce(getMaxCount)[1]}
         </Typography>
-        <Box display='flex'>
+        <Box display='flex' alignItems='center'>
           <Typography variant='caption'>
             human-centric issues have{' '}
             <Typography variant='body1' display='inline'>
