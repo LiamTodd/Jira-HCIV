@@ -1,4 +1,4 @@
-import { Chip } from '@mui/material';
+import { Chip, TableCell, TableRow } from '@mui/material';
 import { THEME_COLOURS_DICT } from '../constants';
 import { combineClassifications } from './misc';
 
@@ -34,4 +34,17 @@ export const generateCommentChips = (data) => {
       }
     });
   return generateCategoryChips(classification);
+};
+
+export const generateCommentRows = (data) => {
+  return Object.entries(data)
+    .filter(([key, _]) => key.startsWith('comment'))
+    .map((comment) => {
+      return (
+        <TableRow>
+          <TableCell>{comment[1].content}</TableCell>
+          <TableCell>{generateCategoryChips(comment[1].predictions)}</TableCell>
+        </TableRow>
+      );
+    });
 };

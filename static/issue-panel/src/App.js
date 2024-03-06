@@ -7,10 +7,21 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Typography } from '@mui/material';
-import { generateCommentChips, generateCategoryChips } from './utils/uiUtils';
+import {
+  Box,
+  CardActions,
+  Collapse,
+  IconButton,
+  Typography,
+} from '@mui/material';
+import {
+  generateCommentChips,
+  generateCategoryChips,
+  generateCommentRows,
+} from './utils/uiUtils';
 
 function App() {
   const [issueId, setIssueId] = useState();
@@ -48,10 +59,16 @@ function App() {
         PREDICT_FUNCTION_KEY,
         constructPayload(comments, summary, description)
       ).then((returnedData) => {
+        console.log(returnedData);
         setProcessedData(returnedData);
       });
     }
   }, [comments, description, summary]);
+
+  const [expanded, setExpanded] = useState(false);
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
   return (
     <TableContainer>
@@ -82,9 +99,27 @@ function App() {
               </TableRow>
 
               <TableRow>
-                <TableCell>Comments (combined)</TableCell>
+                <TableCell>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    Comments (combined)
+                    <CardActions>
+                      <IconButton
+                        onClick={handleExpandClick}
+                        sx={{
+                          transform: expanded
+                            ? 'rotate(180deg)'
+                            : 'rotate(0deg)',
+                          transition: 'transform 0.3s',
+                        }}
+                      >
+                        <ExpandMoreIcon />
+                      </IconButton>
+                    </CardActions>
+                  </Box>
+                </TableCell>
                 <TableCell>{generateCommentChips(processedData)}</TableCell>
               </TableRow>
+              {expanded && generateCommentRows(processedData)}
             </>
           )}
         </TableBody>
