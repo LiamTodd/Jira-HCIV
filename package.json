@@ -13,8 +13,10 @@
   },
   "dependencies": {
     "@forge/bridge": "3.2.0",
-    "@forge/react": "9.2.0",
+    "@forge/react": "^10.0.0",
     "@forge/resolver": "1.5.27",
+    "@forge/ui": "^1.11.0",
+    "buffer": "^6.0.3",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "victory": "^36.9.1"

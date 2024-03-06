@@ -4,7 +4,6 @@ modules:
       resource: issue-panel
       resolver:
         function: resolver
-      render: native
       title: JHCIV Issue Panel
       icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
   jira:projectPage:
@@ -18,7 +17,9 @@ modules:
       handler: resolvers.handler
 resources:
   - key: issue-panel
-    path: src/frontend/issuePanel.jsx
+    path: static/issue-panel/build
+    tunnel:
+      port: 3006
   - key: project-page
     path: static/dashboard/build
     tunnel:
@@ -31,7 +32,7 @@ permissions:
   external:
     fetch:
       backend:
-        - https://1647-2001-8003-401a-c800-88b7-9076-6347-44ec.ngrok-free.app/*
+        - https://3102-2001-8003-401a-c800-8422-3cfb-9a19-c7.ngrok-free.app/*
   content:
     styles:
       - unsafe-inline
