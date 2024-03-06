@@ -1,3 +1,10 @@
+import {
+  APP_USAGE,
+  INCLUSIVENESS,
+  NON_HUMAN_CENTRIC,
+  USER_REACTION,
+} from '../constants';
+
 export const constructPayload = (comments, summary, description) => {
   const payload = {};
   comments.forEach((comment, i) => {
