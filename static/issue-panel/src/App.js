@@ -10,13 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import {
-  Box,
-  CardActions,
-  Collapse,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Box, CardActions, IconButton, Typography } from '@mui/material';
 import {
   generateCommentChips,
   generateCategoryChips,
@@ -40,9 +34,11 @@ function App() {
     if (issueId !== null) {
       getIssueFields(issueId, ['description, comment, summary']).then(
         (data) => {
-          setComments(data.comment.comments);
-          setDescription(data.description.content[0].content[0].text);
-          setSummary(data.summary);
+          if (data) {
+            setComments(data.comment.comments);
+            setDescription(data.description.content[0].content[0].text);
+            setSummary(data.summary);
+          }
         }
       );
     }
@@ -59,7 +55,6 @@ function App() {
         PREDICT_FUNCTION_KEY,
         constructPayload(comments, summary, description)
       ).then((returnedData) => {
-        console.log(returnedData);
         setProcessedData(returnedData);
       });
     }
@@ -101,7 +96,7 @@ function App() {
               <TableRow>
                 <TableCell>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    Comments (combined)
+                    Comments
                     <CardActions>
                       <IconButton
                         onClick={handleExpandClick}
