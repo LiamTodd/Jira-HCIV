@@ -20,11 +20,12 @@ import {
 } from './utils/dataPrepFunctions';
 import Checkbox from '@mui/material/Checkbox';
 import BasicDistributionGroup from './components/BasicDistributionGroup';
-import { AppBar, Box, Grid, Slide, Typography } from '@mui/material';
+import { AppBar, Box, Grid, Typography } from '@mui/material';
 import KeyStats from './components/KeyStats';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import IssueList from './components/IssueList';
 
 function App() {
   const [originalPredictionData, setOriginalPredictionData] = useState();
@@ -53,6 +54,7 @@ function App() {
         (returnedData) => {
           returnedData.forEach((item, index) => {
             // recover fields which were not sent to classifier
+            item.key = issueData[index].key;
             ADDITIONAL_FIELDS.forEach((field) => {
               if (issueData[index].fields[field.name] !== null) {
                 if (field.prop !== null) {
@@ -147,6 +149,7 @@ function App() {
                     field: { clearable: true },
                   }}
                 />
+
                 <DatePicker
                   label='To'
                   onChange={(newDate) => setToDate(newDate)}
@@ -178,6 +181,20 @@ function App() {
                 statuses={statuses}
                 priorities={priorities}
               ></KeyStats>
+            ) : null}
+          </Grid>
+
+          <Grid item xs={12}>
+            {predictionData &&
+            predictionData.length > 0 &&
+            statuses &&
+            priorities ? (
+              <IssueList
+                data={predictionData}
+                showNonHci={showNonHci}
+                statuses={statuses}
+                priorities={priorities}
+              ></IssueList>
             ) : null}
           </Grid>
 
