@@ -20,7 +20,15 @@ import {
 } from './utils/dataPrepFunctions';
 import Checkbox from '@mui/material/Checkbox';
 import BasicDistributionGroup from './components/BasicDistributionGroup';
-import { AppBar, Box, Grid, Typography } from '@mui/material';
+import {
+  AppBar,
+  Box,
+  Grid,
+  ListItemText,
+  MenuItem,
+  Select,
+  Typography,
+} from '@mui/material';
 import KeyStats from './components/KeyStats';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -111,6 +119,27 @@ function App() {
     }
   }, [fromDate, toDate, originalPredictionData]);
 
+  const [filterStatus, setFilterStatus] = useState([]);
+  const handleFilterStatusChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setFilterStatus(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value
+    );
+  };
+  const [filterPriority, setFilterPriority] = useState([]);
+  const handleFilterPriorityChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setFilterPriority(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value
+    );
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       {/* dashboard tools */}
@@ -127,7 +156,7 @@ function App() {
           }}
         >
           <Grid container spacing={2}>
-            <Grid item xs={4}>
+            <Grid item xs={2}>
               <Typography variant='subtitle1'>
                 Show Non-Human Centric Issues
               </Typography>
@@ -137,10 +166,8 @@ function App() {
               ></Checkbox>
             </Grid>
 
-            <Grid item xs={8}>
-              <Typography variant='subtitle1'>
-                Filter by Date Created
-              </Typography>
+            <Grid item xs={4}>
+              <Typography variant='subtitle1'>Date Created</Typography>
               <Box display='flex' gap={2}>
                 <DatePicker
                   label='From'
@@ -158,6 +185,51 @@ function App() {
                   }}
                 />
               </Box>
+            </Grid>
+
+            <Grid item xs={3}>
+              <Typography variant='subtitle1'>Status</Typography>
+              <Select
+                sx={{ width: '100%' }}
+                multiple
+                value={filterStatus}
+                onChange={handleFilterStatusChange}
+                renderValue={(selected) => selected.join(', ')}
+              >
+                {statuses &&
+                  statuses.map((status) => {
+                    return (
+                      <MenuItem value={status.name}>
+                        <Checkbox
+                          checked={filterStatus.indexOf(status.name) > -1}
+                        ></Checkbox>
+                        <ListItemText primary={status.name}></ListItemText>
+                      </MenuItem>
+                    );
+                  })}
+              </Select>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant='subtitle1'>Priority</Typography>
+              <Select
+                sx={{ width: '100%' }}
+                multiple
+                value={filterPriority}
+                onChange={handleFilterPriorityChange}
+                renderValue={(selected) => selected.join(', ')}
+              >
+                {priorities &&
+                  priorities.map((priority) => {
+                    return (
+                      <MenuItem value={priority.name}>
+                        <Checkbox
+                          checked={filterPriority.indexOf(priority.name) > -1}
+                        ></Checkbox>
+                        <ListItemText primary={priority.name}></ListItemText>
+                      </MenuItem>
+                    );
+                  })}
+              </Select>
             </Grid>
           </Grid>
         </AppBar>
@@ -192,8 +264,6 @@ function App() {
               <IssueList
                 data={predictionData}
                 showNonHci={showNonHci}
-                statuses={statuses}
-                priorities={priorities}
               ></IssueList>
             ) : null}
           </Grid>

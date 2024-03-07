@@ -23,7 +23,6 @@ function IssueList({ data, showNonHci }) {
   const [filteredData, setFilteredData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
   useEffect(() => {
     if (showNonHci === true) {
       setFilteredData(data);
