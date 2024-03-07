@@ -32,7 +32,7 @@ permissions:
   external:
     fetch:
       backend:
-        - https://a639-2001-8003-401a-c800-8422-3cfb-9a19-c7.ngrok-free.app/*
+        - https://3abc-2001-8003-401a-c800-8422-3cfb-9a19-c7.ngrok-free.app/*
   content:
     styles:
       - unsafe-inline

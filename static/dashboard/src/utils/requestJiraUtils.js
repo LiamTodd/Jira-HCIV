@@ -1,5 +1,14 @@
 import { requestJira } from '@forge/bridge';
 
+export const getJiraServerInfo = async () => {
+  const response = await requestJira(`/rest/api/3/serverInfo`, {
+    headers: {
+      Accept: 'application/json',
+    },
+  });
+  return await response.json();
+};
+
 const genericJiraGet = async (endpoint) => {
   const response = await requestJira(endpoint, {
     headers: {

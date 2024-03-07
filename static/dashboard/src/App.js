@@ -11,6 +11,7 @@ import {
   getAllIssues,
   getAllPriorities,
   getAllStatuses,
+  getJiraServerInfo,
 } from './utils/requestJiraUtils';
 import { HideOnScroll, constructBulkPayload } from './utils/misc';
 import GroupedBar from './components/GroupedBar';
@@ -41,6 +42,7 @@ function App() {
   const [predictionData, setPredictionData] = useState();
   const [statuses, setStatuses] = useState();
   const [priorities, setPriorities] = useState();
+  const [baseUrl, setBaseUrl] = useState();
   useEffect(() => {
     getAllStatuses().then((statusData) => {
       setStatuses(statusData);
@@ -53,33 +55,44 @@ function App() {
   }, []);
 
   useEffect(() => {
-    getAllIssues(
-      FIELDS_FOR_CLASSIFIER.concat(ADDITIONAL_FIELDS.map((field) => field.name))
-    ).then((issueData) => {
-      issueData.forEach((item, index) => {
-        item.id = index;
-      });
-      invoke(BULK_PREDICT_FUNCTION_KEY, constructBulkPayload(issueData)).then(
-        (returnedData) => {
-          returnedData.forEach((item, index) => {
-            // recover fields which were not sent to classifier
-            item.key = issueData[index].key;
-            ADDITIONAL_FIELDS.forEach((field) => {
-              if (issueData[index].fields[field.name] !== null) {
-                if (field.prop !== null) {
-                  item[field.name] =
-                    issueData[index].fields[field.name][field.prop];
-                } else {
-                  item[field.name] = issueData[index].fields[field.name];
-                }
-              }
-            });
-          });
-          setOriginalPredictionData(returnedData);
-        }
-      );
+    getJiraServerInfo().then((data) => {
+      setBaseUrl(data.baseUrl);
     });
   }, []);
+
+  useEffect(() => {
+    if (baseUrl) {
+      getAllIssues(
+        FIELDS_FOR_CLASSIFIER.concat(
+          ADDITIONAL_FIELDS.map((field) => field.name)
+        )
+      ).then((issueData) => {
+        issueData.forEach((item, index) => {
+          item.id = index;
+        });
+        invoke(BULK_PREDICT_FUNCTION_KEY, constructBulkPayload(issueData)).then(
+          (returnedData) => {
+            returnedData.forEach((item, index) => {
+              // recover fields which were not sent to classifier
+              item.key = issueData[index].key;
+              item.url = `${baseUrl}/browse/${issueData[index].key}`;
+              ADDITIONAL_FIELDS.forEach((field) => {
+                if (issueData[index].fields[field.name] !== null) {
+                  if (field.prop !== null) {
+                    item[field.name] =
+                      issueData[index].fields[field.name][field.prop];
+                  } else {
+                    item[field.name] = issueData[index].fields[field.name];
+                  }
+                }
+              });
+            });
+            setOriginalPredictionData(returnedData);
+          }
+        );
+      });
+    }
+  }, [baseUrl]);
 
   const [showNonHci, setShowNonHci] = useState(false);
 

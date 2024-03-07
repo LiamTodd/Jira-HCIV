@@ -12,12 +12,14 @@ import {
   IconButton,
   Box,
   Collapse,
+  Link,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { generateCategoryChips } from '../utils/uiUtils';
 import { combineClassifications } from '../utils/misc';
 import { NON_HUMAN_CENTRIC } from '../constants';
+import { router } from '@forge/bridge';
 
 function IssueList({ data, showNonHci }) {
   const [filteredData, setFilteredData] = useState([]);
@@ -99,7 +101,17 @@ function IssueList({ data, showNonHci }) {
                 .map((issue) => (
                   <TableRow key={issue.key}>
                     <TableCell>
-                      <Typography variant='caption'>{issue.key}</Typography>
+                      <Link>
+                        <Typography
+                          onClick={() => {
+                            router.open(issue.url);
+                          }}
+                          variant='caption'
+                          sx={{ cursor: 'pointer' }}
+                        >
+                          {issue.key}
+                        </Typography>
+                      </Link>
                     </TableCell>
                     <TableCell>
                       <Typography variant='body2'>
