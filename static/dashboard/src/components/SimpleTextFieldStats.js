@@ -12,7 +12,7 @@ import { getMaxCount } from '../utils/misc';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CategorisedStats from './CategorisedStats';
 
-function SimpleTextFieldStats({ data, dataCategorised }) {
+function SimpleTextFieldStats({ data, dataCategorised, postText }) {
   const [expanded, setExpanded] = useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -35,7 +35,7 @@ function SimpleTextFieldStats({ data, dataCategorised }) {
             <Typography variant='body1' display='inline'>
               {Object.entries(data).reduce(getMaxCount)[0]}
             </Typography>{' '}
-            priority
+            {postText}
           </Typography>
 
           <CardActions>
