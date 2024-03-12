@@ -4,7 +4,7 @@ This repository implements a Jira plugin using Atlassian's Forge framework. The 
 ## Development Environment Setup
 Running a development environment is resource intensive, as two React apps must be running, as well as a Flask API for the classifier, an ngrok tunnel for the classifier, and the Docker engine for the Forge tunnel.
 
-In addition, each time the ngrok tunnel is restarted, the steps for 'Connecting to the Classifier API' must be followed again, along with the 'Deploying the app' instructions
+In addition, each time the ngrok tunnel is restarted, the steps for 'Connecting to the Classifier API' must be followed again, along with the 'Deploying the app' instructions.
 ### Custom UIs
 The issue panel and dashboard are implemented as Forge Custom UIs, using React. Essentially, there are two React apps within the `static` directory, and these need to be built in order to deploy or run the app.
 1. Build the issue panel
