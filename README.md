@@ -1,4 +1,4 @@
-# JHCIV
+# Human-Centric Issue Visualiser
 This repository implements a Jira plugin using Atlassian's Forge framework. The plugin classifies a project's issues into human-centric categories using a tool created by Khalajzadeh et al. (2022), and provides a dashboard and issue panel to visualise the project and its issues from a human-centric perspective.
 
 ## Development Environment Setup

@@ -4,14 +4,14 @@ modules:
       resource: issue-panel
       resolver:
         function: resolver
-      title: JHCIV Issue Panel
+      title: Human-Centric Issue Visualiser
       icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
   jira:projectPage:
     - key: jhciv-project-page
       resource: project-page
       resolver:
         function: resolver
-      title: JHCIV Dashboard
+      title: Human-Centric Issue Visualiser
   function:
     - key: resolver
       handler: resolvers.handler
@@ -32,7 +32,7 @@ permissions:
   external:
     fetch:
       backend:
-        - https://4de1-118-138-100-171.ngrok-free.app/*
+        - https://827a-101-173-87-5.ngrok-free.app/*
   content:
     styles:
       - unsafe-inline
